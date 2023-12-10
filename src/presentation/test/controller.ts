@@ -10,7 +10,13 @@ export class TestController {
 
     public test = (req: Request, res: Response) =>{
         
-        res.json({ok:true});
+        res.status(200).json({
+            node: process.version,
+            env: process.env.ENV,
+            uptime: process.uptime(),
+            ok:true,
+            date: new Date(),
+        });
     }
 
 }
