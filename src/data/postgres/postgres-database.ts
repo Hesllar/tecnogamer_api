@@ -10,24 +10,24 @@ export interface PostgresOptions {
 
 
 export class PostgresDatabase {
+
+    public static instanceDB:Sequelize;
     
     public static connection = async (options:PostgresOptions) => {
 
         const { db_name,  db_user, db_password} = options;
 
         try {
-
-            const sequelize = new Sequelize(db_name, db_user, db_password, {
+         
+            PostgresDatabase.instanceDB = new Sequelize(db_name, db_user, db_password, {
                 host: 'localhost',
                 port: 1213,
                 dialect: 'postgres'
               });
             
+
+            await PostgresDatabase.instanceDB.authenticate();
             
-            await sequelize.authenticate();
-
-            console.log('Db connected');
-
         } catch (error) {
 
             console.log('Error', error);

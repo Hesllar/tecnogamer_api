@@ -36,6 +36,7 @@ export class Server {
             db_user:this.configDB.db_user, 
             db_password:this.configDB.db_password, 
         });
+        
     }
 
     //* Middleware
