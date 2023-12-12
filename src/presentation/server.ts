@@ -34,7 +34,8 @@ export class Server {
         await PostgresDatabase.connection({
             db_name:this.configDB.db_name,
             db_user:this.configDB.db_user, 
-            db_password:this.configDB.db_password, 
+            db_password:this.configDB.db_password,
+            db_port:this.configDB.db_port, 
         });
         
     }
