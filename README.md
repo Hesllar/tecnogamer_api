@@ -6,7 +6,7 @@
 
 ## Descripción
 
-Encargadar de realizar las entradas y salidas de servicios
+Encargado de realizar las entradas y salidas de servicios de compra
 
 ## Instrucciones
 
