@@ -1,4 +1,4 @@
-import { EnvsAdapter } from "./config/envs.adapter";
+import { EnvsAdapter } from "./config";
 import { Server } from "./presentation/server";
 import { AppRoutes } from './presentation/routes';
 

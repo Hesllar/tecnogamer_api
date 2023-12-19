@@ -29,13 +29,6 @@ declare
 v_new_user "user"%ROWTYPE;
 BEGIN
 	
-	
-	if(exists(select u.email  from "user" u where u.email = p_email))then 
-		raise exception  'El correo % ya esta registrado', p_email;
-	elsif(not exists(select * from role_user ru where ru.id = p_role_user_id))then 
-		raise exception  'El rol % no es valido', p_role_user_id;
-	end if;
-	
 	insert into "user"(email, "name", "password", description, role_user_id)
 	values(p_email, p_name, p_password, p_description, p_role_user_id)returning * into v_new_user;
 

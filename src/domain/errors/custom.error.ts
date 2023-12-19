@@ -1,33 +1,34 @@
-
+import { CreateLogProps } from "../dto/log/create-log.dto";
 
 
 
 export class CustomError extends Error {
 
-    constructor(
+    private constructor(
         public readonly statusCode:number,
         public readonly message:string,
+        public readonly stack:string,
     ){
-        super(message);
+        super(JSON.stringify({message, stack}));
     }
 
-    public static badRequest = (message:string) => {
-        return new CustomError(400, message);
+    public static badRequest = (message:string,stack:CreateLogProps) => {
+        return new CustomError(400, message, JSON.stringify(stack));
     }
 
-    public static unauthorized = (message:string) =>{
-        return new CustomError(401, message);
+    public static unauthorized = (message:string, stack:CreateLogProps) =>{
+        return new CustomError(401, message, JSON.stringify(stack));
     }
 
-    public static forbidden = (message:string) => {
-        return new CustomError(403, message);
+    public static forbidden = (message:string, stack:CreateLogProps) => {
+        return new CustomError(403, message, JSON.stringify(stack));
     }
 
-    public static notFound = (message:string) => {
-        return new CustomError(404, message);
+    public static notFound = (message:string, stack:CreateLogProps) => {
+        return new CustomError(404, message, JSON.stringify(stack));
     }
 
-    public static iternalServer = (message:string) => {
-        return new CustomError(500, message);
+    public static iternalServer = (message:string, stack:CreateLogProps) => {
+        return new CustomError(500, message, JSON.stringify(stack));
     }
 }
