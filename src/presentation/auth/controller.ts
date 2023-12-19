@@ -1,5 +1,5 @@
-import e, { Request, Response } from "express";
-import { CreateUserDto, CreateLogDto, CustomError, CreateLogProps } from "../../domain";
+import { Request, Response } from "express";
+import { CreateUserDto, CreateLogDto, CustomError, LoginDto } from "../../domain";
 import { AuthService } from "../services";
 import { HandleHttp } from "../../config";
 
@@ -41,8 +41,42 @@ export class AuthController {
 
 
     public login = (req: Request, res: Response) =>{
-        
-        throw new Error('Method not implemented');
+
+        const [error, loginDto] = LoginDto.create(req.body);
+
+        if(error){
+          return res.status(400).json(
+            HandleHttp.error({
+              message:error,
+              result:null,
+              params:req.body,
+              stack:CreateLogDto.create({ message: error, username:'hesllar@gmail.com'}, req)
+              }));
+        } 
+
+        this.authService.login(loginDto!)
+        .then( user =>{
+
+          const message = 'Inicio sesión correcto';
+          const statusCode = 200;
+
+          return res.status(statusCode).json(HandleHttp.success({
+            message:message,
+            statusCode:statusCode,
+            result:user,
+            params:req.body,
+            stack:CreateLogDto.create({
+              username:'hesllar@gmail.com',
+              message,
+              is_error:false,
+              status_code: statusCode, 
+              code:1,
+              level:'info'
+            }, req)
+          }));
+        })
+        .catch(error => this.handleError(error, res, req));
+
     }
 
     public createUser = (req: Request, res: Response) => {

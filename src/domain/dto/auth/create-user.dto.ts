@@ -4,9 +4,9 @@
 export class CreateUserDto{
 
     private constructor(
-        public email:      string,
+        public email:               string,
         public readonly name:       string,
-        public readonly password:   string,
+        public password:            string,
         public readonly description:string,
         public readonly roleUserId: number, 
     ){}

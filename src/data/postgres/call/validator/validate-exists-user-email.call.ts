@@ -1,9 +1,9 @@
 import { PostgresDatabase } from "../../postgres-database";
 
 
-export class ValidateUserEmail {
+export class ValidateUserEmailCall {
 
-    public static validate = async(email:string):Promise<boolean> => {
+    public static validateUserEmailPG = async(email:string):Promise<boolean> => {
 
         try {
             

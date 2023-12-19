@@ -1,4 +1,4 @@
-import { CreateLogCall } from "../data/postgres/call/log/create-log.call";
+import { CreateLogCall } from "../data";
 import { CreateLogProps } from "../domain";
 
 export interface HttpOptions {
