@@ -10,6 +10,7 @@ interface Envs {
     postgres_db_user:       string;
     postgres_db_password:   string;
     postgres_db_port:       number;
+    seed:                   string;
 }
 
 export class EnvsAdapter {
@@ -22,6 +23,7 @@ export class EnvsAdapter {
             postgres_db_user: env.get(`${node_env}_POSTGRES_DB_USER`).required().asString(),
             postgres_db_password: env.get(`${node_env}_POSTGRES_DB_PASSWORD`).required().asString(),
             postgres_db_port: env.get(`${node_env}_POSTGRES_DB_PORT`).default(5432).asInt(),
+            seed:env.get(`${node_env}_SEED`).required().asString()
         }
 
     }

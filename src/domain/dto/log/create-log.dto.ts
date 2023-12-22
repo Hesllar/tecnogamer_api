@@ -44,7 +44,7 @@ export class CreateLogDto{
             is_error,
             request:JSON.stringify(resto),
             stack:JSON.stringify(stack),
-            username:props.username,
+            username:props.username ?? null,
             headers: JSON.stringify(req.headers),
             level
         }

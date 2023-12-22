@@ -66,7 +66,6 @@ export class AuthController {
             result:user,
             params:req.body,
             stack:CreateLogDto.create({
-              username:'hesllar@gmail.com',
               message,
               is_error:false,
               status_code: statusCode, 
@@ -105,7 +104,6 @@ export class AuthController {
             result:newUser,
             params:req.body,
             stack:CreateLogDto.create({
-              username:'hesllar@gmail.com',
               message,
               is_error:false,
               status_code: statusCode, 

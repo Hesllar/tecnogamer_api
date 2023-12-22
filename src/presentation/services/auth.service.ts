@@ -1,5 +1,10 @@
-import { BycryptAdapter } from '../../config';
-import { CreateUserCall, ValidateUserEmailCall, GetUserByEmailCall } from '../../data';
+import { BycryptAdapter, JwtAdapter } from '../../config';
+import { 
+        CreateUserCall, 
+        GetUserByEmailCall, 
+        ValidateRolUserCall, 
+        ValidateUserEmailCall,
+} from '../../data';
 import { CreateUserDto, CustomError, LoginDto } from '../../domain';
 
 
@@ -13,11 +18,21 @@ export class AuthService {
 
         createUserDto.email = createUserDto.email.toLowerCase();
 
-        const result = await ValidateUserEmailCall.validateUserEmailPG(createUserDto.email);
+        const [existEmail, existRol] = await Promise.all([
+            ValidateUserEmailCall.validateUserEmailPG(createUserDto.email),
+            ValidateRolUserCall.validateRolUserPG(createUserDto.roleUserId),
+        ]);
 
-        if(result){
+        if(existEmail){
 
             const message = `El correo ${createUserDto.email} ya esta registrado`;
+
+            throw CustomError.badRequest(message,  {message,username:'hesllar@gmail.com'});
+        } 
+
+        if(!existRol){
+
+            const message = `El rol ${createUserDto.roleUserId} no esta registrado`;
 
             throw CustomError.badRequest(message,  {message,username:'hesllar@gmail.com'});
         } 
@@ -50,7 +65,7 @@ export class AuthService {
 
             const message = `El correo ${loginDto.email} no esta registrado`;
 
-            throw CustomError.badRequest(message, {message, username:'hesllar@gmail.com'});
+            throw CustomError.badRequest(message, {message});
         } 
 
         const {password, ...resto} = await GetUserByEmailCall.getUserByEmailPG(loginDto.email);
@@ -61,10 +76,18 @@ export class AuthService {
             
             const message = `El correo o la contraseña no son correctos`;
 
-            throw CustomError.badRequest(message, {message, username:'hesllar@gmail.com'});
+            throw CustomError.badRequest(message, {message});
         }
         
-        return resto;
+        const token = await JwtAdapter.generateToken({user:resto.email, id:resto.id});
+
+        if(!token){
+            const message = `Error al momento de generar el token`;
+
+            throw CustomError.iternalServer(message, {message});
+        }
+
+        return {...resto, token};
     }
 
 }
