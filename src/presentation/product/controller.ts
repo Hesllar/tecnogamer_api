@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { CreateUserDto, CreateLogDto, CustomError, LoginDto } from "../../domain";
-import { AuthService } from "../services";
+import { CreateLogDto, CustomError, CreateProductDto} from "../../domain";
 import { HandleHttp } from "../../config";
+import { ProductService } from "../services";
 
-export class AuthController {
+export class ProductController {
 
     //DI
     constructor(
-      private readonly authService:AuthService
+      private readonly productService:ProductService
     ){}
 
     private handleError = (error: any, res: Response, req:Request ) => {
@@ -38,48 +38,9 @@ export class AuthController {
         }));
     } 
 
-
-    public login = (req: Request, res: Response) =>{
-
-        const [error, loginDto] = LoginDto.create(req.body);
-
-        if(error){
-          return res.status(400).json(
-            HandleHttp.error({
-              message:error,
-              result:null,
-              params:req.body,
-              stack:CreateLogDto.create({ message: error}, req)
-              }));
-        } 
-
-        this.authService.login(loginDto!)
-        .then( user => {
-
-          const message = 'Inicio sesión correcto';
-          const statusCode = 200;
-
-          return res.status(statusCode).json(HandleHttp.success({
-            message:message,
-            statusCode:statusCode,
-            result:user,
-            params:req.body,
-            stack:CreateLogDto.create({
-              message,
-              is_error:false,
-              status_code: statusCode, 
-              code:1,
-              level:'info'
-            }, req)
-          }));
-        })
-        .catch(error => this.handleError(error, res, req));
-
-    }
-
-    public createUser = (req: Request, res: Response) => {
-  
-      const [error, createUserDto] = CreateUserDto.create(req.body);
+    public createProduct = (req: Request, res: Response) => {
+    
+      const [error, createProductDto] = CreateProductDto.create(req.body);
 
       if(error){
         return res.status(400).json(
@@ -87,20 +48,20 @@ export class AuthController {
             message:error,
             result:null,
             params:req.body,
-            stack:CreateLogDto.create({ message: error }, req)
+            stack:CreateLogDto.create({ message: error}, req)
             }));
       } 
 
-      this.authService.createUser(createUserDto!)
-        .then(newUser =>{
 
-          const message = 'Usuario creado correctamente';
+      this.productService.createProduct(createProductDto!)
+        .then(newProduct =>{
+          const message = 'Producto creado correctamente';
           const statusCode = 201;
 
           return res.status(statusCode).json(HandleHttp.success({
             message:message,
             statusCode:statusCode,
-            result:newUser,
+            result:newProduct,
             params:req.body,
             stack:CreateLogDto.create({
               message,

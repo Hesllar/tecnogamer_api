@@ -36,13 +36,15 @@ export class HandleHttp {
 
         new HandleHttp(httpOptions.stack);
 
+        if(params) delete params.user;
+
         return {
             message,
             statusCode,
             code, 
             error, 
             result,
-            params,
+            request:params,
         };
     }
 
@@ -58,13 +60,15 @@ export class HandleHttp {
 
         new HandleHttp(httpOptions.stack);
 
+        if(params) delete params.user;
+
         return {
             message,
             statusCode,
             code, 
             error, 
             result,
-            params,
+            request:params,
         };
     }
     

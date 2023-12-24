@@ -1,7 +1,7 @@
 import { CreateUserDto } from "../../../../domain";
 import { PostgresDatabase } from "../../postgres-database";
 
-export interface User{
+export interface UserPG{
     id:             number;
     email:          string;
     description:    string;
@@ -11,7 +11,7 @@ export interface User{
 
 export class CreateUserCall {
 
-    public static createUserPG = async(createUserDto:CreateUserDto):Promise<User> => {
+    public static createUserPG = async(createUserDto:CreateUserDto):Promise<UserPG> => {
 
         try {
             const {
@@ -29,7 +29,7 @@ export class CreateUserCall {
             });
 
 
-            return result as User;
+            return result as UserPG;
 
         } catch (error) {
             throw error;

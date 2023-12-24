@@ -12,7 +12,7 @@ export class TestRoutes {
         const authController = new TestController();
         
         // Definir las rutas
-        router.use('/',authController.test);
+        router.get('/',authController.test);
 
         return router;
     }

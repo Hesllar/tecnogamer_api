@@ -14,8 +14,8 @@ export class AuthRoutes {
         
         const authController = new AuthController(authService);
         // Definir las rutas
-        router.use('/login',authController.login);
-        router.use('/create-user',authController.createUser);
+        router.post('/login',authController.login);
+        router.post('/create-user',authController.createUser);
 
         return router;
     }

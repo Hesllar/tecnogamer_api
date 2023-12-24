@@ -27,14 +27,14 @@ export class AuthService {
 
             const message = `El correo ${createUserDto.email} ya esta registrado`;
 
-            throw CustomError.badRequest(message,  {message,username:'hesllar@gmail.com'});
+            throw CustomError.badRequest(message,  {message});
         } 
 
         if(!existRol){
 
             const message = `El rol ${createUserDto.roleUserId} no esta registrado`;
 
-            throw CustomError.badRequest(message,  {message,username:'hesllar@gmail.com'});
+            throw CustomError.badRequest(message, {message});
         } 
 
         try {
@@ -48,7 +48,6 @@ export class AuthService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                username:'hesllar@gmail.com',
                 stack:{stack:error.stack, message:error.message}
             });
         }
@@ -79,7 +78,7 @@ export class AuthService {
             throw CustomError.badRequest(message, {message});
         }
         
-        const token = await JwtAdapter.generateToken({user:resto.email, id:resto.id});
+        const token = await JwtAdapter.generateToken({username:resto.email, id:resto.id});
 
         if(!token){
             const message = `Error al momento de generar el token`;

@@ -34,7 +34,7 @@ export class CreateLogDto{
         } = props;
 
         const {password, ...resto} = req.body;
-
+      
         const createLogDto ={
             code,
             message,
@@ -44,7 +44,7 @@ export class CreateLogDto{
             is_error,
             request:JSON.stringify(resto),
             stack:JSON.stringify(stack),
-            username:props.username ?? null,
+            username:resto.user?.username ?? null,
             headers: JSON.stringify(req.headers),
             level
         }

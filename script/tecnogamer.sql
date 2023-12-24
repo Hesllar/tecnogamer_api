@@ -47,7 +47,9 @@ CREATE TABLE "product" (
   "category_id" int,
   "brand_id" int,
   "created_at" timestamp DEFAULT 'now()',
-  "updated_at" timestamp
+  "updated_at" timestamp,
+  "image_url" varchar NULL,
+  "description" text NULL,
 );
 
 CREATE TABLE "order" (
