@@ -1,18 +1,14 @@
-import { CreateUserDto } from "../../../../domain";
+import { CreateProductDto, ProductStatus } from "../../../../domain";
 import { PostgresDatabase } from "../../postgres-database";
+import { Util } from "../../../../config";
 
-export enum StatusProduct {
-    'in_stock',
-    'out_of_stock',
-    'running_low',
-}
 
-export interface Product{
+export interface ProductPG{
     id:             number;
     name:           string;
     description:    string;
     price:          number;
-    status:         StatusProduct;
+    status:         ProductStatus;
     stock:          number;
     category_id:    number;
     brand_id:       number;
@@ -21,29 +17,18 @@ export interface Product{
 
 export class CreateProductCall {
 
-    public static createProductPG = async(createProductDto:any):Promise<Product> => {
+    public static createProductPG = async(createProductDto:CreateProductDto):Promise<ProductPG> => {
 
         try {
-            const {
-                name,
-                description,
-                price,
-                stock,
-                categoryId,
-                brandId,
-                imageUrl,
-                status
-             
-            } = createProductDto;
-    
-            const query = 'select * from create_product(?, ?, ?, ?, ?, ?, ?, ?)'
+          
+            const query = `select * from create_product(${Util.keyToString(createProductDto)})`
             const [result] = await PostgresDatabase.instanceDB.query(query, {
-                replacements:[name , description, price, status, stock, categoryId, brandId, imageUrl],
+                replacements:{...createProductDto},
                 type: PostgresDatabase.queryTypes.SELECT
             });
 
 
-            return result as Product;
+            return result as ProductPG;
 
         } catch (error) {
             throw error;

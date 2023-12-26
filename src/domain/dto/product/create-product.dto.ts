@@ -1,19 +1,19 @@
-import { User } from "../../";
+import { ProductStatus, User } from "../../";
 
-
+const optionsStatus = ['en_stock', 'sin_stock', 'poco_stock'];
 
 export class CreateProductDto{
 
     private constructor(
         public readonly name:           string,
-        public readonly user:           User,
         public readonly description:    string,
         public readonly price:          number,
+        public readonly status:         string, 
         public readonly stock:          number, 
         public readonly categoryId:     number, 
         public readonly brandId:        number, 
         public readonly imageUrl:       string,
-        public status?:                 string,            
+                   
     ){}
 
 
@@ -27,7 +27,8 @@ export class CreateProductDto{
             categoryId,
             brandId,
             imageUrl = '',
-            user
+            user,
+            status,
         } = porps;
 
         if(typeof name === 'undefined' || typeof name !== 'string') 
@@ -53,11 +54,17 @@ export class CreateProductDto{
             if(typeof imageUrl !== 'string') return ['La imagen del producto debe ser una cadena de texto'];
         }
 
+        if(typeof status === 'undefined' || typeof status !== 'string') 
+            return ['El estado del producto es requerido, o su valor no es una cadena de texto'];
+
+        if(!optionsStatus.includes(status))
+            return [`Las opciones para el estado del producto son: ${optionsStatus}`];
+
         return [ undefined, new CreateProductDto(
             name.trim(),
-            user,
             description,
             price,
+            status,
             stock,
             categoryId,
             brandId,

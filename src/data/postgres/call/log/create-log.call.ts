@@ -1,6 +1,8 @@
+import { Util } from "../../../../config";
+import { CreateLogProps } from "../../../../domain";
 import { PostgresDatabase } from "../../postgres-database";
 
-export interface Log{
+export interface LogPG{
     id:                 number;
     code:               number;
     message:            string;
@@ -18,42 +20,17 @@ export interface Log{
 
 
 export class CreateLogCall {
-    public static createLogPG = async(object:{[key:string]:any}):Promise<Log> => {
+    public static createLogPG = async(createLogProps:CreateLogProps):Promise<LogPG> => {
 
         try {
-            const {
-                code,
-                message,
-                method,
-                path,
-                status_code,
-                is_error,
-                request,
-                stack,
-                username,
-                headers,
-                level,
-            } = object;
             
-            const query = 'select * from create_log(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            const query = `select * from create_log(${Util.keyToString(createLogProps)})`
             const [result] = await PostgresDatabase.instanceDB.query(query, {
-                replacements:[
-                    code,
-                    message,
-                    method,
-                    path,
-                    status_code,
-                    is_error,
-                    request,
-                    stack,
-                    username,
-                    headers,
-                    level,
-                ],
+                replacements: {...createLogProps},
                 type: PostgresDatabase.queryTypes.SELECT
             });
             
-            return result as Log;
+            return result as LogPG;
 
         } catch (error) {
             throw error;

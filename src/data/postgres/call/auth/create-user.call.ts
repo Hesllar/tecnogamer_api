@@ -1,5 +1,6 @@
 import { CreateUserDto } from "../../../../domain";
 import { PostgresDatabase } from "../../postgres-database";
+import { Util } from "../../../../config";
 
 export interface UserPG{
     id:             number;
@@ -14,17 +15,10 @@ export class CreateUserCall {
     public static createUserPG = async(createUserDto:CreateUserDto):Promise<UserPG> => {
 
         try {
-            const {
-                email,
-                name,
-                password,
-                description,
-                roleUserId
-            } = createUserDto;
-    
-            const query = 'select * from create_user(?, ?, ?, ?, ?)'
+           
+            const query = `select * from create_user(${Util.keyToString(createUserDto)})`
             const [result] = await PostgresDatabase.instanceDB.query(query, {
-                replacements:[email ,name ,password ,description ,roleUserId],
+                replacements:{...createUserDto},
                 type: PostgresDatabase.queryTypes.SELECT
             });
 

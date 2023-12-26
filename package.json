@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "set NODE_ENV=DEV && nodemon",
+    "dev": "export NODE_ENV=development || set NODE_ENV=development && nodemon",
     "build": "rimraf ./dist && tsc",
-    "start": "set NODE_ENV=PROD && npm run build && node dist/app.js"
+    "start": "export NODE_ENV=production || set NODE_ENV=production && npm run build && node dist/app.js"
   },
   "keywords": [],
   "author": "",

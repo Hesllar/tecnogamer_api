@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import * as env from 'env-var';
 
-const node_env = process.env.NODE_ENV?.trim() ?? 'DEV';
+const node_env = (process.env.NODE_ENV === 'production') ? 'PROD' : 'DEV';
 
 interface Envs {
     env:                    string;

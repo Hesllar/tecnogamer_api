@@ -44,7 +44,7 @@ export class ProductService {
         
         try {
 
-            const newProduct = await CreateProductCall.createProductPG({...createProductDto, status:'in_stock'});
+            const newProduct = await CreateProductCall.createProductPG(createProductDto);
 
             return newProduct;
 
