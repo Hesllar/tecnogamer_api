@@ -23,19 +23,11 @@ export class AuthService {
             ValidateRolUserCall.validateRolUserPG(createUserDto.roleUserId),
         ]);
 
-        if(existEmail){
+        if(existEmail) throw CustomError.badRequest( `El correo ${createUserDto.email} ya esta registrado`);
+        
 
-            const message = `El correo ${createUserDto.email} ya esta registrado`;
-
-            throw CustomError.badRequest(message,  {message});
-        } 
-
-        if(!existRol){
-
-            const message = `El rol ${createUserDto.roleUserId} no esta registrado`;
-
-            throw CustomError.badRequest(message, {message});
-        } 
+        if(!existRol) throw CustomError.badRequest(`El rol ${createUserDto.roleUserId} no esta registrado`);
+        
 
         try {
 
@@ -48,7 +40,7 @@ export class AuthService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                stack:{stack:error.stack, message:error.message}
+                stack:{stack:error.stack}
             });
         }
     }
@@ -60,32 +52,18 @@ export class AuthService {
 
         const result = await ValidateUserEmailCall.validateUserEmailPG(loginDto.email);
 
-        if(!result){
-
-            const message = `El correo ${loginDto.email} no esta registrado`;
-
-            throw CustomError.badRequest(message, {message});
-        } 
-
+        if(!result) throw CustomError.badRequest(`El correo ${loginDto.email} no esta registrado`);
+        
         const {password, ...resto} = await GetUserByEmailCall.getUserByEmailPG(loginDto.email);
        
         const compare = BycryptAdapter.compare(loginDto.password, password);
         
-        if(!compare) {
-            
-            const message = `El correo o la contraseña no son correctos`;
-
-            throw CustomError.badRequest(message, {message});
-        }
+        if(!compare)  throw CustomError.badRequest('El correo o la contraseña no son correctos');
         
         const token = await JwtAdapter.generateToken({username:resto.email, id:resto.id});
 
-        if(!token){
-            const message = `Error al momento de generar el token`;
-
-            throw CustomError.iternalServer(message, {message});
-        }
-
+        if(!token) throw CustomError.iternalServer('Error al momento de generar el token');
+        
         return {...resto, token};
     }
 

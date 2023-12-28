@@ -16,7 +16,19 @@ export class ProductRoutes {
         const productController = new ProductController(productService);
         
         // Definir las rutas
+
+        // *GET
+        router.get('/', productController.getProducts);
+        router.get('/:id', productController.getProductById);
+
+        // *POST
         router.post('/', AuthMiddleware.validateJWT, productController.createProduct);
+
+        // *PUT
+        router.put('/:id', AuthMiddleware.validateJWT, productController.updateProductById);
+
+        // *DELETE
+        router.delete('/:id', AuthMiddleware.validateJWT, productController.deleteProductById);
 
         return router;
     }

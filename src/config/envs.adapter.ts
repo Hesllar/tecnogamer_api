@@ -1,30 +1,17 @@
-import 'dotenv/config';
+import { Util } from './utils';
+import dotenv from 'dotenv';
 import * as env from 'env-var';
 
-const node_env = (process.env.NODE_ENV === 'production') ? 'PROD' : 'DEV';
-
-interface Envs {
-    env:                    string;
-    port:                   number;
-    postgres_db_name:       string;
-    postgres_db_user:       string;
-    postgres_db_password:   string;
-    postgres_db_port:       number;
-    seed:                   string;
-}
+dotenv.config({path:`./.env.${Util.setNodeEnv()}`});
 
 export class EnvsAdapter {
+    
+    public static env: string =         env.get('ENV').required().asString();
+    public static port: number =        env.get('PORT').required().asInt();
+    public static db_name: string =     env.get('DB_NAME').required().asString();
+    public static db_user: string =     env.get('DB_USER').required().asString();
+    public static db_password: string = env.get('DB_PASSWORD').required().asString();
+    public static db_port: number =     env.get('DB_PORT').required().asInt();
+    public static seed: string =        env.get('SEED').required().asString();
 
-    public static envs = ():Envs =>{
-        return {
-            env:env.get(`${node_env}_ENV`).default('dev').asString(),
-            port:env.get(`${node_env}_PORT`).required().asInt(),
-            postgres_db_name: env.get(`${node_env}_POSTGRES_DB_NAME`).required().asString(),
-            postgres_db_user: env.get(`${node_env}_POSTGRES_DB_USER`).required().asString(),
-            postgres_db_password: env.get(`${node_env}_POSTGRES_DB_PASSWORD`).required().asString(),
-            postgres_db_port: env.get(`${node_env}_POSTGRES_DB_PORT`).default(5432).asInt(),
-            seed:env.get(`${node_env}_SEED`).required().asString()
-        }
-
-    }
 }

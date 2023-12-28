@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { EnvsAdapter } from './envs.adapter';
 import { User } from '../domain';
 
-const { seed } = EnvsAdapter.envs();
+const seed = EnvsAdapter.seed;
 
 export class JwtAdapter {
 

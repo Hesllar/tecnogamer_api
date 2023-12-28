@@ -12,23 +12,23 @@ export class CustomError extends Error {
         super(JSON.stringify({message, stack}));
     }
 
-    public static badRequest = (message:string,stack:any) => {
-        return new CustomError(400, message, JSON.stringify(stack));
+    public static badRequest = (message:string,stack?:any) => {
+        return new CustomError(400, message, JSON.stringify({message, ...stack}));
     }
 
-    public static unauthorized = (message:string, stack:any) =>{
-        return new CustomError(401, message, JSON.stringify(stack));
+    public static unauthorized = (message:string, stack?:any) =>{
+        return new CustomError(401, message, JSON.stringify({message, ...stack}));
     }
 
-    public static forbidden = (message:string, stack:any) => {
-        return new CustomError(403, message, JSON.stringify(stack));
+    public static forbidden = (message:string, stack?:any) => {
+        return new CustomError(403, message, JSON.stringify({message, ...stack}));
     }
 
-    public static notFound = (message:string, stack:any) => {
-        return new CustomError(404, message, JSON.stringify(stack));
+    public static notFound = (message:string, stack?:any) => {
+        return new CustomError(404, message, JSON.stringify({message, ...stack}));
     }
 
-    public static iternalServer = (message:string, stack:any) => {
-        return new CustomError(500, message, JSON.stringify(stack));
+    public static iternalServer = (message:string, stack?:any) => {
+        return new CustomError(500, message, JSON.stringify({message, ...stack}));
     }
 }

@@ -20,8 +20,8 @@ export class HandleHttp {
     private constructor(
         private readonly stack:CreateLogProps,
     ){
-
-        CreateLogCall.createLogPG(stack)
+        if(stack.code === -1) CreateLogCall.createLogPG(stack).catch(err => console.log(err));
+        
     }
 
     public static success = (httpOptions:HttpOptions) =>{

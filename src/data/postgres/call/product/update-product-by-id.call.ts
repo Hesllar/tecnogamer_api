@@ -1,17 +1,17 @@
-import { CreateProductDto, ProductPG } from "../../../../domain";
+import { UpdateProductByIdDto, ProductPG } from "../../../../domain";
 import { PostgresDatabase } from "../../postgres-database";
 import { Util } from "../../../../config";
 
 
-export class CreateProductCall {
+export class UpdateProductByIdCall {
 
-    public static createProductPG = async(createProductDto:CreateProductDto):Promise<ProductPG> => {
+    public static updateProductByIdPG = async(updateProductByIdDto:UpdateProductByIdDto):Promise<ProductPG> => {
 
         try {
           
-            const query = `select * from create_product(${Util.keyToString(createProductDto)})`
+            const query = `select * from update_product_by_id(${Util.keyToString(updateProductByIdDto)})`
             const [result] = await PostgresDatabase.instanceDB.query(query, {
-                replacements:{...createProductDto},
+                replacements:{...updateProductByIdDto},
                 type: PostgresDatabase.queryTypes.SELECT
             });
 
