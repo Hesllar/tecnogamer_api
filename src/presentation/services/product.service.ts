@@ -3,16 +3,10 @@ import {
     DeleteProductByIdCall,
     GetProductByIdCall, 
     GetProductsCall,
-    UpdateProductByIdCall,
-    ValidateBrandIdCall,
-    ValidateCategoryIdCall,
-    ValidateExistsProductNameUpdateCall,
-    ValidateProductIdCall,
-    ValidateProductNameCall,
+    UpdateProductByIdCall
 } from '../../data';
 import { CustomError, CreateProductDto, UpdateProductByIdDto } from '../../domain';
-
-
+import { ValidatorService } from './';
 
 
 export class ProductService {
@@ -39,7 +33,7 @@ export class ProductService {
 
     public getProductById = async (id: number) => {
 
-        const existsProductId = await ValidateProductIdCall.validateProductIdPG(id);
+        const existsProductId = await ValidatorService.validateProductId(id);
 
         if(!existsProductId) throw CustomError.badRequest('El producto enviado no esta registrado');
         
@@ -52,7 +46,7 @@ export class ProductService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                stack:{stack:error.stack}
+                stack:{stack:error.stack, message:error.message}
             });
         }
     }
@@ -61,9 +55,9 @@ export class ProductService {
     public createProduct = async (createProductDto:CreateProductDto) => {
 
         const [ existsBrandId, existsCategoryId, existsProductName] = await Promise.all([
-            ValidateBrandIdCall.validateBrandIdPG(createProductDto.brandId),
-            ValidateCategoryIdCall.validateCategoryIdPG(createProductDto.categoryId),
-            ValidateProductNameCall.validateProductNamePG(createProductDto.name)
+            ValidatorService.validateBrandId(createProductDto.brandId),
+            ValidatorService.validateCategoryId(createProductDto.categoryId),
+            ValidatorService.validateProductName(createProductDto.name)
         ]);
 
         if(!existsBrandId) throw CustomError.badRequest('La marca enviada no esta registrada');
@@ -83,7 +77,7 @@ export class ProductService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                stack:{stack:error.stack}
+                stack:{stack:error.stack, message:error.message}
             });
         }
     }
@@ -93,10 +87,10 @@ export class ProductService {
         const { id, brandId, categoryId, name } = updateProductByIdDto;
 
         const [ existsProductId, existsBrandId, existsCategoryId, existsProductName] = await Promise.all([
-            ValidateProductIdCall.validateProductIdPG(id),
-            ValidateBrandIdCall.validateBrandIdPG(brandId),
-            ValidateCategoryIdCall.validateCategoryIdPG(categoryId),
-            ValidateExistsProductNameUpdateCall.validateProductNameUpdatePG(id, name),
+            ValidatorService.validateProductId(id),
+            ValidatorService.validateBrandId(brandId),
+            ValidatorService.validateCategoryId(categoryId),
+            ValidatorService.validateProductNameUpdate(id, name),
         ]);
 
         if(!existsProductId) throw CustomError.badRequest('El id del producto enviado no esta registrado');
@@ -119,7 +113,7 @@ export class ProductService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                stack:{stack:error.stack}
+                stack:{stack:error.stack, message:error.message}
             });
         }
 
@@ -127,7 +121,7 @@ export class ProductService {
 
     public deleteProductById = async (id: number) => {
 
-        const existsProductId = await ValidateProductIdCall.validateProductIdPG(id);
+        const existsProductId = await ValidatorService.validateProductId(id);
      
         if(!existsProductId) throw CustomError.badRequest('El id del producto enviado no esta registrado');
         
@@ -140,7 +134,7 @@ export class ProductService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                stack:{stack:error.stack}
+                stack:{stack:error.stack, message:error.message}
             });
         }
 

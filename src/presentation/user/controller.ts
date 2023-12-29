@@ -11,15 +11,16 @@ export class UserController {
     ){}
 
     private handleError = (error: any, res: Response, req:Request ) => {
-      
+
+      const params = { body:req.body, params:req.params, query:req.query };
+
       if ( error instanceof CustomError ) {
        
         return res.status(error.statusCode).json(
           HandleHttp.error({
             message:error.message,
             statusCode:error.statusCode,
-            result:null,
-            params:req.body,
+            params,
             stack:CreateLogDto.create(JSON.parse(error.stack), req)
           }));
       }
@@ -30,8 +31,7 @@ export class UserController {
           HandleHttp.error({
             message:'Error no controlado',
             statusCode:statusCode,
-            result:null,
-            params:req.body,
+            params,
             stack:CreateLogDto.create({
               stack:{stack:error.stack, message:error.message},
               status_code:statusCode,
@@ -54,7 +54,6 @@ export class UserController {
             message:message,
             statusCode:statusCode,
             result:users,
-            params:null,
             stack:CreateLogDto.create({
               message,
               is_error:false,
@@ -77,7 +76,6 @@ export class UserController {
         return res.status(400).json(
           HandleHttp.error({
             message:error,
-            result:null,
             params:req.params,
             stack:CreateLogDto.create({ message: error}, req)
             }));

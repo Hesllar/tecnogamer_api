@@ -1,10 +1,10 @@
-import { CreateLogCall } from "../data";
 import { CreateLogProps } from "../domain";
+import { LogService } from "../presentation";
 
 export interface HttpOptions {
     message:        string;
-    params:         any;
-    result:         any;
+    params?:         any;
+    result?:         any;
     stack:          CreateLogProps,
     code?:          number;
     error?:         boolean;
@@ -20,7 +20,7 @@ export class HandleHttp {
     private constructor(
         private readonly stack:CreateLogProps,
     ){
-        if(stack.code === -1) CreateLogCall.createLogPG(stack).catch(err => console.log(err));
+        if(stack.code === -1) LogService.createLog(stack).catch(error => console.log(error));
         
     }
 
@@ -29,8 +29,8 @@ export class HandleHttp {
             code = 1,
             error = false,
             message,
-            params,
-            result,
+            params= null,
+            result = null,
             statusCode = 200,
         } = httpOptions;
 
@@ -53,8 +53,8 @@ export class HandleHttp {
             code = -1,
             error = true,
             message,
-            params,
-            result,
+            params = null,
+            result = null,
             statusCode = 400,
         } = httpOptions;
 

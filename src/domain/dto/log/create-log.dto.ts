@@ -33,8 +33,11 @@ export class CreateLogDto{
             stack = null, 
         } = props;
 
+       
         const {password, ...resto} = req.body;
-      
+
+        const request = JSON.stringify({ body:resto, params:req.params, query:req.query});
+
         const createLogDto ={
             code,
             message,
@@ -42,8 +45,8 @@ export class CreateLogDto{
             path: req.originalUrl,
             status_code,
             is_error,
-            request:JSON.stringify(resto),
-            stack:JSON.stringify(stack),
+            request,
+            stack:(stack) ? JSON.stringify(stack) : null,
             username:resto.user?.username ?? null,
             headers: JSON.stringify(req.headers),
             level

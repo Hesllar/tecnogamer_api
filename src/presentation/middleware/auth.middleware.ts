@@ -18,8 +18,6 @@ export class AuthMiddleware {
                 HandleHttp.error({
                 message:'Token no proveído',
                 statusCode:statusCode,
-                result:null,
-                params:null,
                 stack:CreateLogDto.create({status_code:statusCode, message:'Token no proveído'}, req)
             })
           );
@@ -32,21 +30,17 @@ export class AuthMiddleware {
                     HandleHttp.error({
                     message:'Token inválido',
                     statusCode:statusCode,
-                    result:null,
-                    params:null,
                     stack:CreateLogDto.create({status_code:statusCode, message:'Token inválido'}, req)
                 })
             );
         
             
-            const existsEmail = await ValidatorService.validateUserEmailPG(payload.email);
+            const existsEmail = await ValidatorService.validateUserEmail(payload.email);
 
             if(!existsEmail) return res.status(statusCode).json(
                     HandleHttp.error({
                     message:'Token invalido - usuario no registrado',
                     statusCode:statusCode,
-                    result:null,
-                    params:null,
                     stack:CreateLogDto.create({status_code:statusCode, message:'Token invalido - usuario no registrado'}, req)
                 })
             );
@@ -61,8 +55,6 @@ export class AuthMiddleware {
                     HandleHttp.error({
                     message:'Error no controlado',
                     statusCode:500,
-                    result:null,
-                    params:null,
                     stack:CreateLogDto.create({
                         status_code:500,
                         stack:{stack:error.stack, message:error.message},

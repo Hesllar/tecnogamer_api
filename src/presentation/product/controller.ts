@@ -37,7 +37,6 @@ export class ProductController {
           HandleHttp.error({
             message:'Error no controlado',
             statusCode:statusCode,
-            result:null,
             params,
             stack:CreateLogDto.create({
               stack:{stack:error.stack, message:error.message},
@@ -57,7 +56,6 @@ export class ProductController {
             message:message,
             statusCode:statusCode,
             result:products,
-            params:null,
             stack:CreateLogDto.create({
               message,
               is_error:false,
@@ -82,7 +80,6 @@ export class ProductController {
         return res.status(400).json(
           HandleHttp.error({
             message,
-            result:null,
             params:req.params,
             stack:CreateLogDto.create({message}, req)
             })
@@ -120,7 +117,6 @@ export class ProductController {
         return res.status(400).json(
           HandleHttp.error({
             message:error,
-            result:null,
             params:req.body,
             stack:CreateLogDto.create({ message: error}, req)
             }));
@@ -161,7 +157,6 @@ export class ProductController {
           return res.status(400).json(
             HandleHttp.error({
               message:error,
-              result:null,
               params:body,
               stack:CreateLogDto.create({ message: error}, req)
               }));
@@ -201,7 +196,6 @@ export class ProductController {
             return res.status(400).json(
               HandleHttp.error({
                 message,
-                result:null,
                 params:req.params,
                 stack:CreateLogDto.create({message}, req)
                 })

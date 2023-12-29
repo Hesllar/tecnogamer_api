@@ -21,14 +21,14 @@ export class UserService {
         } catch (error) {
             if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
                 status_code:500,
-                stack:{stack:error.stack}
+                stack:{stack:error.stack, message:error.message}
             });
         }
     }
 
     public getUserByEmail = async (email:string) => {
         
-        const result = await ValidatorService.validateUserEmailPG(email);
+        const result = await ValidatorService.validateUserEmail(email);
 
         if(!result) throw CustomError.badRequest(`El correo ${email} no esta registrado`);
 
