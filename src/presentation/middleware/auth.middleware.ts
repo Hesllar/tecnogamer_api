@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateLogDto, User } from "../../domain";
-import { JwtAdapter,HandleHttp } from "../../config";
-import { ValidateUserEmailCall } from "../../data";
+import { JwtAdapter, HandleHttp } from "../../config";
+import { ValidatorService } from "../services";
 
 
 
 
 export class AuthMiddleware {
 
-
     public static validateJWT = async (req:Request, res:Response, next:NextFunction) =>{
-
+        
         const statusCode = 401;
 
         const authorization = req.header('x-access-token');
@@ -38,8 +37,9 @@ export class AuthMiddleware {
                     stack:CreateLogDto.create({status_code:statusCode, message:'Token inválido'}, req)
                 })
             );
-
-            const existsEmail = await ValidateUserEmailCall.validateUserEmailPG(payload.username);
+        
+            
+            const existsEmail = await ValidatorService.validateUserEmailPG(payload.email);
 
             if(!existsEmail) return res.status(statusCode).json(
                     HandleHttp.error({
@@ -51,7 +51,7 @@ export class AuthMiddleware {
                 })
             );
             
-            req.body.user = {username: payload.username, id: payload.id};
+            req.body.user = {username: payload.email, id: payload.id};
 
             next();
 

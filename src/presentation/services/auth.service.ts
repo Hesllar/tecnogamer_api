@@ -1,25 +1,26 @@
 import { BycryptAdapter, JwtAdapter } from '../../config';
 import { 
         CreateUserCall, 
-        GetUserByEmailCall, 
-        ValidateRolUserCall, 
-        ValidateUserEmailCall,
+        ValidateRolUserCall,
 } from '../../data';
 import { CreateUserDto, CustomError, LoginDto } from '../../domain';
+import { UserService, ValidatorService } from './';
 
 
 
 export class AuthService {
 
     //DI
-    constructor(){}
+    constructor(
+        private readonly userService:UserService
+    ){}
 
     public createUser = async (createUserDto:CreateUserDto) => {
-
+        
         createUserDto.email = createUserDto.email.toLowerCase();
 
         const [existEmail, existRol] = await Promise.all([
-            ValidateUserEmailCall.validateUserEmailPG(createUserDto.email),
+            ValidatorService.validateUserEmailPG(createUserDto.email),
             ValidateRolUserCall.validateRolUserPG(createUserDto.roleUserId),
         ]);
 
@@ -47,20 +48,17 @@ export class AuthService {
 
 
     public login = async (loginDto:LoginDto) => {
-
-        loginDto.email = loginDto.email.toLowerCase();
-
-        const result = await ValidateUserEmailCall.validateUserEmailPG(loginDto.email);
-
-        if(!result) throw CustomError.badRequest(`El correo ${loginDto.email} no esta registrado`);
         
-        const {password, ...resto} = await GetUserByEmailCall.getUserByEmailPG(loginDto.email);
+        
+        const userByEmail = await this.userService.getUserByEmail(loginDto.email); 
        
+        const {password, ...resto} = userByEmail!;
+
         const compare = BycryptAdapter.compare(loginDto.password, password);
         
         if(!compare)  throw CustomError.badRequest('El correo o la contraseña no son correctos');
         
-        const token = await JwtAdapter.generateToken({username:resto.email, id:resto.id});
+        const token = await JwtAdapter.generateToken({email:resto.email, id:resto.id});
 
         if(!token) throw CustomError.iternalServer('Error al momento de generar el token');
         

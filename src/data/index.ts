@@ -10,7 +10,8 @@ export * from './postgres/call/product/get-product-by-id.call';
 export * from './postgres/call/product/get-products.call';
 export * from './postgres/call/product/update-product-by-id.call';
 // * User
-export * from './postgres/call/user/get_user_by_email.call';
+export * from './postgres/call/user/get-user-by-email.call';
+export * from './postgres/call/user/get-users.call';
 // * Validator
 export * from './postgres/call/validator/validate-exists-brand-id.call';
 export * from './postgres/call/validator/validate-exists-category-id.call';

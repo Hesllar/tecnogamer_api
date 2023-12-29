@@ -21,7 +21,7 @@ export class LoginDto{
 
         if(typeof password !== 'string') return ['El campo contraseña debe ser una cadena de texto'];
 
-        return [ undefined, new LoginDto(email, password)];
+        return [ undefined, new LoginDto(email.trim(), password)];
     }
 
 }

@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { AuthRoutes, TestRoutes, ProductRoutes } from "./";
+import { 
+    AuthRoutes, 
+    ProductRoutes,
+    TestRoutes, 
+    UserRoutes, 
+} from "./";
 
 
 
@@ -11,9 +16,14 @@ export class AppRoutes {
         const router = Router();
 
         // Definir las rutas
+        //* AUTH
         router.use('/api/auth', AuthRoutes.routes());
+        //* TEST
         router.use('/api/test', TestRoutes.routes());
+        //* PRODUCT
         router.use('/api/product', ProductRoutes.routes());
+        //* USER
+        router.use('/api/user', UserRoutes.routes());
 
         return router;
     }
