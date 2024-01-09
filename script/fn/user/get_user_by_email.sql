@@ -3,10 +3,9 @@
  * Creator: Hesllar Linzmayer
  * Description:Obtener usuario identificado por su correo
  * Create: 18-12-2023
- * Last Update: **-**-****
+ * Last Update: 07-01-2024
  * select * from get_user_by_email('hesllar2@gmail.com');
  */
-
 
 
 CREATE OR REPLACE FUNCTION get_user_by_email(p_email varchar)
@@ -25,7 +24,9 @@ AS $function$
 
 BEGIN
 	
-	
+	if((select validate_exists_user_email(lower(p_email))) is false)then
+		raise exception 'El correo enviado no esta registrado';
+	end if;
 
 	return query
 		select 

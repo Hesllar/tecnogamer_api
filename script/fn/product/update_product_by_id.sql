@@ -3,7 +3,7 @@
  * Creator: Hesllar Linzmayer
  * Description: Actualizar un producto identificado por el parámetro "id"
  * Create: 26-12-2023
- * Last Update: **-**-****
+ * Last Update: 09-01-2024
  * select * from update_product_by_id (19, 'Frac', '', 750, 'sin_stock', 30, 1, 1, 'https://image.com');
  */
 
@@ -34,6 +34,16 @@ CREATE OR REPLACE FUNCTION update_product_by_id(
  LANGUAGE plpgsql
 AS $function$
 begin
+	
+	if((select validate_exists_product_id(p_id)) is false)then
+		raise exception 'El id del producto enviado no esta registrado';
+	elsif((select validate_exists_brand_id(p_brand_id)) is false)then
+		raise exception 'El id de la marca enviado no esta registrado';
+	elsif((select validate_exists_category_id(p_category_id)) is false)then
+		raise exception 'El id de la categoría enviado no esta registrado';
+	elsif((select validate_exists_product_name_update(p_id, p_name)) is true)then
+		raise exception 'El nombre del producto enviado, ya pertenece a otro producto';
+	end if;
 	
 	update product p
 	set

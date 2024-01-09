@@ -27,13 +27,13 @@ export class CreateLogDto{
         const { 
             code = -1, 
             is_error = true, 
-            status_code = 400,
+            statusCode = 400,
             message = 'Error no controlado',
             level = 'error',
             stack = null, 
         } = props;
 
-       
+      
         const {password, ...resto} = req.body;
 
         const request = JSON.stringify({ body:resto, params:req.params, query:req.query});
@@ -43,7 +43,7 @@ export class CreateLogDto{
             message,
             method: req.method,
             path: req.originalUrl,
-            status_code,
+            status_code:statusCode,
             is_error,
             request,
             stack:(stack) ? JSON.stringify(stack) : null,

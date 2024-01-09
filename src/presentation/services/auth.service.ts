@@ -1,7 +1,7 @@
-import { BycryptAdapter, JwtAdapter } from '../../config';
+import { BycryptAdapter, HandleErrorDB, JwtAdapter } from '../../config';
 import { CreateUserCall } from '../../data';
 import { CreateUserDto, CustomError, LoginDto } from '../../domain';
-import { UserService, ValidatorService } from './';
+import { UserService } from './';
 
 
 
@@ -14,18 +14,6 @@ export class AuthService {
 
     public createUser = async (createUserDto:CreateUserDto) => {
         
-        createUserDto.email = createUserDto.email.toLowerCase();
-
-        const [existEmail, existRol] = await Promise.all([
-            ValidatorService.validateUserEmail(createUserDto.email),
-            ValidatorService.validateRolUser(createUserDto.roleUserId)
-        ]);
-
-        if(existEmail) throw CustomError.badRequest( `El correo ${createUserDto.email} ya esta registrado`);
-        
-
-        if(!existRol) throw CustomError.badRequest(`El rol ${createUserDto.roleUserId} no esta registrado`);
-        
         try {
 
             createUserDto.password = BycryptAdapter.hash(createUserDto.password);
@@ -35,10 +23,7 @@ export class AuthService {
             return newUser;
 
         } catch (error) {
-            if(error instanceof Error) throw CustomError.iternalServer('Error no controlado',{
-                status_code:500,
-                stack:{stack:error.stack, message:error.message}
-            });
+            if(error instanceof Error) throw HandleErrorDB.validate(error);
         }
     }
 

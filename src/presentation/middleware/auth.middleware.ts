@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateLogDto, User } from "../../domain";
-import { JwtAdapter, HandleHttp } from "../../config";
-import { ValidatorService } from "../services";
+import { CustomError, User } from "../../domain";
+import { JwtAdapter } from "../../config";
+
 
 
 
@@ -10,58 +10,23 @@ export class AuthMiddleware {
 
     public static validateJWT = async (req:Request, res:Response, next:NextFunction) =>{
         
-        const statusCode = 401;
-
         const authorization = req.header('x-access-token');
 
-        if(!authorization) return res.status(statusCode).json(
-                HandleHttp.error({
-                message:'Token no proveído',
-                statusCode:statusCode,
-                stack:CreateLogDto.create({status_code:statusCode, message:'Token no proveído'}, req)
-            })
-          );
+        if(!authorization) return next(CustomError.unauthorized('Token no proveído'))
 
         try {
             
             const payload = await JwtAdapter.validateToken<User>(authorization);
             
-            if(!payload) return res.status(statusCode).json(
-                    HandleHttp.error({
-                    message:'Token inválido',
-                    statusCode:statusCode,
-                    stack:CreateLogDto.create({status_code:statusCode, message:'Token inválido'}, req)
-                })
-            );
+            if(!payload) return next(CustomError.unauthorized('Token invalido'));
         
-            
-            const existsEmail = await ValidatorService.validateUserEmail(payload.email);
-
-            if(!existsEmail) return res.status(statusCode).json(
-                    HandleHttp.error({
-                    message:'Token invalido - usuario no registrado',
-                    statusCode:statusCode,
-                    stack:CreateLogDto.create({status_code:statusCode, message:'Token invalido - usuario no registrado'}, req)
-                })
-            );
-            
             req.body.user = {username: payload.email, id: payload.id};
 
             next();
 
         } catch (error ) {
-            if(error instanceof Error){
-                return res.status(500).json(
-                    HandleHttp.error({
-                    message:'Error no controlado',
-                    statusCode:500,
-                    stack:CreateLogDto.create({
-                        status_code:500,
-                        stack:{stack:error.stack, message:error.message},
-                    }, req)
-                })
-            );
-            }
+            if(error instanceof Error)
+                return next(CustomError.iternalServer('Error no controlado',{stack:{stack:error.stack, message:error.message}}))
         }
 
 

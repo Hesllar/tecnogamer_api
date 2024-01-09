@@ -4,7 +4,7 @@
 export class CreateUserDto{
 
     private constructor(
-        public email:               string,
+        public readonly email:      string,
         public readonly name:       string,
         public password:            string,
         public readonly description:string,
@@ -40,7 +40,7 @@ export class CreateUserDto{
 
         if(typeof roleUserId !== 'number') return ['El rol del usuario debe ser un numero'];
 
-        return [ undefined, new CreateUserDto(email, name, password, description, roleUserId)];
+        return [ undefined, new CreateUserDto(email.toLowerCase(), name, password, description, roleUserId)];
     }
 
 }

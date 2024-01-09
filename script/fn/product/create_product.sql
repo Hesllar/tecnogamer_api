@@ -3,7 +3,7 @@
  * Creator: Hesllar Linzmayer
  * Description: Crea un nuevo registro de producto en la base de datos
  * Create: 22-12-2023
- * Last Update: **-**-****
+ * Last Update: 08-01-2024
  * select * from create_product ('Frac', '', 750, 'in_stock', 30, 3, 3, 'https://image.com');
  */
 
@@ -34,6 +34,14 @@ AS $function$
 declare
 v_new_product product%ROWTYPE;
 begin
+	
+	if((select validate_exists_product_name(p_name)) is true)then
+		raise exception 'El nombre del producto enviado ya esta registrado';
+	elsif((select validate_exists_brand_id(p_brand_id)) is false)then
+		raise exception 'La marca del producto enviado no esta registrado';
+	elsif((select validate_exists_category_id(p_category_id)) is false)then
+		raise exception 'La categoría del producto enviado no esta registrado';
+	end if;
 	
 	insert into product("name", description, price, status, stock, category_id, brand_id, image_url)
 	values (p_name, p_description, p_price, p_status, p_stock, p_category_id, p_brand_id, p_image_url) returning * into v_new_product;

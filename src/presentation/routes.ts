@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { 
     AuthRoutes, 
+    HandleHttp, 
     ProductRoutes,
     TestRoutes, 
     UserRoutes, 
@@ -24,6 +25,8 @@ export class AppRoutes {
         router.use('/api/product', ProductRoutes.routes());
         //* USER
         router.use('/api/user', UserRoutes.routes());
+
+        router.use(HandleHttp.handle);
 
         return router;
     }

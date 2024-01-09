@@ -3,9 +3,9 @@ import { LogService } from "../presentation";
 
 export interface HttpOptions {
     message:        string;
-    params?:         any;
-    result?:         any;
-    stack:          CreateLogProps,
+    params?:        any;
+    result?:        any;
+    stack?:         CreateLogProps,
     code?:          number;
     error?:         boolean;
     statusCode?:    number;
@@ -15,16 +15,17 @@ export interface HttpOptions {
 
 
 
-export class HandleHttp {
+export class HandleResponseHttp {
 
     private constructor(
         private readonly stack:CreateLogProps,
     ){
-        if(stack.code === -1) LogService.createLog(stack).catch(error => console.log(error));
+        if(stack) LogService.createLog(stack).catch(error => console.log(error));
         
     }
 
     public static success = (httpOptions:HttpOptions) =>{
+        
         const {
             code = 1,
             error = false,
@@ -34,8 +35,8 @@ export class HandleHttp {
             statusCode = 200,
         } = httpOptions;
 
-        new HandleHttp(httpOptions.stack);
-
+        new HandleResponseHttp(httpOptions.stack!);
+       
         if(params) delete params.user;
 
         return {
@@ -58,7 +59,7 @@ export class HandleHttp {
             statusCode = 400,
         } = httpOptions;
 
-        new HandleHttp(httpOptions.stack);
+        new HandleResponseHttp(httpOptions.stack!);
 
         if(params) delete params.user;
 

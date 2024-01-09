@@ -3,7 +3,7 @@
  * Creator: Hesllar Linzmayer
  * Description: Obtiene un producto identificado por el parámetro "id"
  * Create: 26-12-2023
- * Last Update: **-**-****
+ * Last Update: 08-01-2024
  * select * from get_product_by_id(1);
  */
 
@@ -26,7 +26,9 @@ CREATE OR REPLACE FUNCTION get_product_by_id(p_id int)
 AS $function$
 begin
 	
-
+	if((select validate_exists_product_id(p_id)) is false)then
+		raise 'El id del producto enviado no esta registado';
+	end if;
 
 	RETURN QUERY
 		select 
@@ -40,5 +42,3 @@ END;
 $function$
 ;
 
-
-select * from tecnogamer_log tl 

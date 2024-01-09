@@ -17,18 +17,22 @@ export class ProductRoutes {
         
         // Definir las rutas
 
+        router.use(AuthMiddleware.validateJWT);
         // *GET
         router.get('/', productController.getProducts);
+
         router.get('/:id', productController.getProductById);
 
         // *POST
-        router.post('/', AuthMiddleware.validateJWT, productController.createProduct);
+        router.post('/', productController.createProduct);
 
         // *PUT
-        router.put('/:id', AuthMiddleware.validateJWT, productController.updateProductById);
+        router.put('/:id', productController.updateProductById);
 
         // *DELETE
-        router.delete('/:id', AuthMiddleware.validateJWT, productController.deleteProductById);
+        router.delete('/:id', productController.deleteProductById);
+
+        
 
         return router;
     }
