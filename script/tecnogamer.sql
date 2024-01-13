@@ -1,7 +1,7 @@
 CREATE TYPE "product_status" AS ENUM (
-  'in_stock',
-  'out_of_sotck',
-  'running_low'
+  'en_stock',
+  'sin_sotck',
+  'poco_stock'
 );
 
 CREATE TYPE "order_status" AS ENUM (

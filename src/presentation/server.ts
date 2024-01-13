@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import cors from 'cors';
 import compression from 'compression';
 import { PostgresDatabase, PostgresOptions } from '../data';
 
@@ -42,9 +43,16 @@ export class Server {
 
     //* Middleware
     private middleware = () => {
+        this.app.disable('x-powered-by');
+        this.app.use( cors({
+            origin: "*",
+            methods: "GET,PUT,PATCH,POST,DELETE",
+            preflightContinue: false,
+            optionsSuccessStatus: 204
+          }) );
         this.app.use( express.json() ); // raw JSON
         this.app.use( express.urlencoded({ extended: true })); // x-www-form-urlencoded
-        this.app.use(compression());
+        this.app.use( compression() );
     }
 
     //* Rutas
