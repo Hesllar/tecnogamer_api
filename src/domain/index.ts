@@ -1,7 +1,8 @@
 export * from './errors/custom.error';
-
+//* INTERFACE
 export * from './interfaces/user.interface';
 export * from './interfaces/product.interface';
+export * from './interfaces/sequelize-db-error.interface';
 
 export * from './enum/product-status.enum';
 //* AUTH

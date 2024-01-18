@@ -36,7 +36,7 @@ export class CreateLogDto{
       
         const {password, ...resto} = req.body;
 
-        const request = JSON.stringify({ body:resto, params:req.params, query:req.query});
+        const request = JSON.stringify({ body:resto, params:req.url, query:req.query});
 
         const createLogDto ={
             code,
