@@ -1,3 +1,8 @@
+/* Cambio de values
+*
+* ALTER TYPE "order_status" RENAME VALUE 'existing_enum_value' to 'new_enum_value';
+*/
+
 CREATE TYPE "product_status" AS ENUM (
   'en_stock',
   'sin_sotck',
@@ -5,10 +10,10 @@ CREATE TYPE "product_status" AS ENUM (
 );
 
 CREATE TYPE "order_status" AS ENUM (
-  'placed',
-  'confirm',
+  'delivered',
+  'confirmed',
   'processed',
-  'complete'
+  'completed'
 );
 
 CREATE TABLE "category" (
@@ -109,3 +114,162 @@ ALTER TABLE "order_item" ADD FOREIGN KEY ("order_id") REFERENCES "order" ("id");
 ALTER TABLE "order_item" ADD FOREIGN KEY ("product_id") REFERENCES "product" ("id");
 
 ALTER TABLE "order" ADD FOREIGN KEY ("payment_type_id") REFERENCES "payment_type" ("id");
+
+/** INSERTS TABLAS*/
+/**/
+/* TABLA CATEGORY*/
+
+INSERT INTO "category" ("name", description, created_at, updated_at)
+VALUES('Procesadores', 'Unidades CPU Desktop', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Placa Madre', 'Motherboard', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Tarjetas de Video', 'Unidadades GPU Dedicada', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Memorias', 'Modulos de Memoria RAM', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Almacenamiento', 'Unidades de Almacenamiento', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Fuentes de Poder', 'Fuentes de Poder Modulares', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Gabinetes', 'Gabinetes ATX', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Monitores', 'Monitores Gamer', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Audio', 'Sistema de Audio', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Sillas Gamer', 'Silla Gamer', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Mouses', 'Mouse Gamer', now(), NULL);
+
+INSERT INTO "category" (id, "name", description, created_at, updated_at)
+VALUES('Teclados', 'Teclado Gamer', now(), NULL);
+
+
+/* TABLA BRAND*/
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('AMD', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('INTEL', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('NVIDIA', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('KINGSTON', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('ADATA', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('CRUCIAL', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('SEAGATE', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('TOSHIBA', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('WESTERN DIGITAL', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('GIGABYTE', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('COUGAR', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('THERMALTAKE', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('GAMDIAS', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('EVGA', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('CORSAIR', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('DEEPCOOL', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('LG', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('LENOVO', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('SAMSUNG', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('VIEWSONIC', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('MSI', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('HYPERX', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('LOGITECH', NULL, now(), NULL);
+
+INSERT INTO "brand" (id, "name", description, created_at, updated_at)
+VALUES('PRIMUS', NULL, now(), NULL);
+
+
+/* TABLA PRODUCT*/
+
+INSERT INTO "product" ("name", price, status, stock, category_id, brand_id, created_at, updated_at, image_url, description)
+VALUES('AMD Ryzen 5 3600', 230000, 'en_stock', 30, 1, 1, now(), NULL, NULL, NULL);
+
+INSERT INTO "product" ("name", price, status, stock, category_id, brand_id, created_at, updated_at, image_url, description)
+VALUES('AMD Ryzen 5 5600', 300000, 'en_stock', 22, 1, 1, now(), NULL, NULL, NULL);
+
+INSERT INTO "product" ("name", price, status, stock, category_id, brand_id, created_at, updated_at, image_url, description)
+VALUES('AMD Ryzen 5 2500', 180000, 'en_stock', 15, 1, 1, now(), NULL, NULL, NULL);
+
+INSERT INTO "product" ("name", price, status, stock, category_id, brand_id, created_at, updated_at, image_url, description)
+VALUES('AMD Ryzen 5 5700', 350000, 'en_stock', 10, 1, 1, now(), NULL, NULL, NULL);
+
+INSERT INTO "product" ("name", price, status, stock, category_id, brand_id, created_at, updated_at, image_url, description)
+VALUES('INTEL i5 12500X', 370000, 'en_stock', 5, 1, 2, now(), NULL, NULL, NULL);
+
+
+/* TABLA PAYMENT TYPE*/
+
+INSERT INTO "payment_type" ("name", created_at)
+VALUES('Credito', now());
+
+INSERT INTO "payment_type" ("name", created_at)
+VALUES('Debito', now());
+
+INSERT INTO "payment_type" ("name", created_at)
+VALUES('Efectivo', now());
+
+INSERT INTO "payment_type" ("name", created_at)
+VALUES('Transferencia', now());
+
+INSERT INTO "payment_type" ("name", created_at)
+VALUES('Aplicación Movil', now());
+
+/**/
+
+SELECT CURRENT_TIMESTAMP;
+
+SHOW TIMEZONE;
+
+/**/
