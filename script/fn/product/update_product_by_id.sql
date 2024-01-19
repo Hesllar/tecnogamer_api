@@ -4,7 +4,7 @@
  * Description: Actualizar un producto identificado por el parámetro "id"
  * Create: 26-12-2023
  * Last Update: 09-01-2024
- * select * from update_product_by_id (19, 'Frac', '', 750, 'sin_stock', 30, 1, 1, 'https://image.com');
+ * select * from update_product_by_id (1, 'AMD Ryzen 5 3900', '', 7180000, 'sin_stock', 30, 1, 1, 'https://image.com');
  */
 
 

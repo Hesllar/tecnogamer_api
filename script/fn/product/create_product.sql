@@ -1,10 +1,10 @@
 /**
- * Name:Crear un producto
+ * Name: Crear un producto
  * Creator: Hesllar Linzmayer
  * Description: Crea un nuevo registro de producto en la base de datos
  * Create: 22-12-2023
  * Last Update: 08-01-2024
- * select * from create_product ('Frac', '', 750, 'in_stock', 30, 3, 3, 'https://image.com');
+ * select * from create_product ('AMD Ryzen 5 3600', '', 230000, 'en_stock', 30, 1, 1, 'https://image.com');
  */
 
 

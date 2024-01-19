@@ -27,7 +27,7 @@ AS $function$
 begin
 	
 	if((select validate_exists_product_id(p_id)) is false)then
-		raise 'El id del producto enviado no esta registado';
+		raise 'El id del producto ingresado no esta registrado';
 	end if;
 
 	RETURN QUERY
