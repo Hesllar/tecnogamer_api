@@ -15,3 +15,5 @@ export * from './dto/product/create-product.dto';
 export * from './dto/product/update-product-by-id.dto';
 //* USER
 export * from './dto/user/get-user-by-email.dto';
+//* BRAND
+export * from './dto/brand/create-brand.dto';
