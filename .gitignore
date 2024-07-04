@@ -3,3 +3,4 @@ node_modules
 /postgres
 docker-compose.yml
 dist
+script/tecnogamer.sql
