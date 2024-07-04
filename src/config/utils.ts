@@ -7,6 +7,7 @@ export class Util {
     }
 
     public static setNodeEnv = () =>{
+        console.log(process.env.NODE_ENV)
         switch (process.env.NODE_ENV) {
             case 'dev':
                 process.env.NODE_ENV = 'development';
